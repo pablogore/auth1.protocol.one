@@ -1,33 +1,28 @@
 {{- if .Values.enableMongo }}
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  annotations:
-    "helm.sh/resource-policy": keep
-  name: {{ .Release.Name }}-mongo
-  labels:
-    app: {{ .Release.Name }}
-    role: mongo
-spec:
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 15Gi
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: nfs-share
-    path: "/home/nfsroot/k8sdata/{{ .Release.Name }}-mongo"
+#kind: PersistentVolume
+#apiVersion: v1
+#metadata:
+#  annotations:
+#    "helm.sh/resource-policy": keep
+#  name: {{ .Release.Name }}-mongo
+#  labels:
+#    app: {{ .Release.Name }}
+#    role: mongo
+#spec:
+#  persistentVolumeReclaimPolicy: Retain
+#  capacity:
+#    storage: 15Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  nfs:
+#    server: nfs-share
+#    path: "/home/nfsroot/k8sdata/{{ .Release.Name }}-mongo"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-mongo
 spec:
-  storageClassName: ""
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}  
-      role: "mongo"
   accessModes:
     - ReadWriteOnce
   resources:

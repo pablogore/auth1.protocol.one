@@ -1,33 +1,28 @@
 {{- if .Values.enableRedis }}
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  annotations:
-    "helm.sh/resource-policy": keep
-  name: {{ .Release.Name }}-redis
-  labels:
-    app: {{ .Release.Name }}
-    role: redis
-spec:
-  persistentVolumeReclaimPolicy: Retain
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    server: nfs-share
-    path: "/home/nfsroot/k8sdata/{{ .Release.Name }}-redis"
+#kind: PersistentVolume
+#apiVersion: v1
+#etadata:
+#  annotations:
+#    "helm.sh/resource-policy": keep
+#  name: {{ .Release.Name }}-redis
+#  labels:
+#   app: {{ .Release.Name }}
+#    role: redis
+#spec:
+#  persistentVolumeReclaimPolicy: Retain
+#  capacity:
+#    storage: 10Gi
+#  accessModes:
+#    - ReadWriteOnce
+#  nfs:
+#    server: nfs-share
+#    path: "/home/nfsroot/k8sdata/{{ .Release.Name }}-redis"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Release.Name }}-redis
 spec:
-  storageClassName: ""
-  selector:
-    matchLabels:
-      app: {{ .Release.Name }}  
-      role: redis
   accessModes:
     - ReadWriteOnce
   resources:
