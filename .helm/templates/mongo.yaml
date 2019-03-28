@@ -66,6 +66,8 @@ spec:
           claimName: {{ .Release.Name }}-mongo
       containers:
       - name: mongo
+        nodeSelector:
+          mongo: true
         image: library/mongo:4.1.3
         env:
           - name: MONGO_INITDB_ROOT_USERNAME

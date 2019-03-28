@@ -31,6 +31,11 @@ spec:
   selector:
     matchLabels:
       app: hydra
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       name: hydra
@@ -56,7 +61,7 @@ spec:
               name: p1auth1hydra-env
               key: DATABASE_URL
         - name: LOG_LEVEL
-          value: debug
+          value: warning
       containers:
         - name: hydra
           #image: oryd/hydra:v0.11.14-alpine
@@ -66,12 +71,32 @@ spec:
           #volumeMounts:
           #  - name: hydra-data
           #    mountPath: /root
+          nodeSelector:
+            auth1: true
           ports:
             - name: publicsvc
               containerPort: 4444
             - name: internalsvc
               containerPort: 4445
           env:
+          - name: BCRYPT_COST
+            value: "8"
+          - name: LOG_FORMAT
+            value: json
+          - name: DISABLE_TELEMETRY
+            value: "1"
+          #- name: PROFILING
+          #  value: cpu
+          - name: TRACING_PROVIDER
+            value: jaeger
+          - name: TRACING_PROVIDER_JAEGER_SAMPLING_SERVER_URL
+            value: http://jaeger-agent:5778/sampling
+          - name: TRACING_PROVIDER_JAEGER_LOCAL_AGENT_ADDRESS
+            value: jaeger-agent:6831
+          - name: TRACING_PROVIDER_JAEGER_SAMPLING_TYPE
+            value: const
+          - name: TRACING_PROVIDER_JAEGER_SAMPLING_VALUE
+            value: "1"
           {{- range .Values.hydra.env }}
           - name: {{ . }}
             valueFrom:
@@ -79,11 +104,11 @@ spec:
                 name: p1auth1hydra-env
                 key: {{ . }}
           {{- end }}
-          resources:
-            limits:
-              cpu: 200m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
+          #resources:
+          #  limits:
+          #    cpu: 200m
+          #    memory: 256Mi
+          #  requests:
+          #    cpu: 100m
+          #    memory: 128Mi
 {{- end }}

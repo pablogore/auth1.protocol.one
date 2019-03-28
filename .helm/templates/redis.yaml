@@ -66,6 +66,8 @@ spec:
           claimName: {{ .Release.Name }}-redis
       containers:
       - name: {{ .Release.Name }}
+        nodeSelector:
+          mongo: true
         image: redis:3.2.12-alpine
         args: ["--appendonly","yes", "--save", "900", "1", "--save", "30", "2"]
         ports:

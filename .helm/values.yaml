@@ -18,7 +18,7 @@ backend:
   name: gobackend
   role: gobackend
   image: "p1hub/p1auth1"
-  imageTag: master-18
+  imageTag: master-47
   port: 8080
   replicas: 1
   service: 

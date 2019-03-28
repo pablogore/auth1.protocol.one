@@ -38,6 +38,8 @@ spec:
       serviceAccountName: {{ .Release.Name }}
       containers:
       - name: {{ $deployment.name }}
+        nodeSelector:
+          auth1: true
         image: {{ $deployment.image }}:{{ $deployment.imageTag }}
         env:
         - name: MICRO_SERVER_ADDRESS
@@ -65,10 +67,10 @@ spec:
 #          timeoutSeconds: 1
 #          failureThreshold: 3
 #          periodSeconds: 5
-        resources:
-          limits:
-            cpu: 200m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
+#        resources:
+#          limits:
+#            cpu: 200m
+#            memory: 256Mi
+#          requests:
+#            cpu: 100m
+#            memory: 128Mi
